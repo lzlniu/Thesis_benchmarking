@@ -1,0 +1,25 @@
+# other
+all_pmid.txt
+journalrank567.txt
+excluded_documents2.txt
+noSJR_excluded_documents.txt
+record.txt
+*.tsv
+*.xls
+
+# logs
+logs
+
+# archive
+archive
+xmlout
+
+# data
+proj*/*.gz
+proj*/STDIN*
+proj*/*.tsv
+proj*/*.pdf
+proj*/*.log
+proj*/*.out
+proj*/*.err
+proj*/logs
