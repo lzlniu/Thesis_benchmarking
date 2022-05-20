@@ -69,7 +69,7 @@ if (length(labels_col) >= 1) {
 
 # plain FP vs TP plot
 fp_tp <- ggplot(pp_data, aes(x = fp_cum, y = tp_cum, col=.data[[labels_col]], key = score)) + #col = .data[[variant_col]] if you want to color by score
-  scale_colour_manual(values=c("#485063", "#ff7f00", "#33a02c", "#5ba4cf", "#e334af", "#c71a2b", "#f2ef49", "#09e0b2", "#2803fc", "#302570"))+
+  scale_colour_manual(values=c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#ccebc5", "#bc80bd"))+
 #prec_score <- ggplot(pp_data, aes(x = precision, y = score, col=.data[[labels_col]], key = score)) + #col = .data[[variant_col]] if you want to color by score
   #geom_path(size = .05) +
   geom_path() +

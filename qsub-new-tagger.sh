@@ -3,10 +3,10 @@
 ### Account information
 #PBS -W group_list=ku_10024 -A ku_10024
 ### Job name (comment out the next line to get the name of the script used as the job name)
-#PBS -N tagger_fasttextR
+#PBS -N distbiobert
 ### Output files (comment out the next 2 lines to get the job name used instead)
-###PBS -e tagger.err
-###PBS -o tagger.log
+#PBS -e logs/reanalysis_distbiobert.err
+#PBS -o logs/reanalysis_distbiobert.log
 ### Only send mail when job is aborted or terminates abnormally
 ###PBS -m n
 ### Number of nodes
@@ -22,8 +22,8 @@
 echo Working directory is $PBS_O_WORKDIR
 cd $PBS_O_WORKDIR
 
-#exec 1>${PBS_JOBID}.out
-#exec 2>${PBS_JOBID}.err
+#exec 1 > logs/reanalysis_${PBS_JOBNAME}.out
+#exec 2 > logs/reanalysis_${PBS_JOBNAME}.err
  
 ### Here follows the user commands:
 # Define number of processors
@@ -37,8 +37,8 @@ echo This job has allocated $NPROCS nodes
 
 # This is where the work is done
 # Make sure that this script is not bigger than 64kb ~ 150 lines, otherwise put in seperat script and execute from here
-outname=fasttextR
-weightfile=/home/projects/ku_10024/people/zelili/berter/data/weights_${outname}.tsv
+
+weightfile=/home/projects/ku_10024/people/zelili/tagger_test/weights_${PBS_JOBNAME}.tsv
 gzip -cd `ls -1 /home/projects/ku_10024/data/databases/pmc/*.en.merged.filtered.tsv.gz` `ls -1r /home/projects/ku_10024/data/databases/pubmed/*.tsv.gz` | cat /home/projects/ku_10024/people/zelili/tagger_test/excluded_documents2.txt - | /home/projects/ku_10024/people/zelili/tagger/tagcorpus --threads=40 \
 	--autodetect \
 	--types=/home/projects/ku_10024/data/dictionary/curated_types.tsv \
@@ -49,7 +49,11 @@ gzip -cd `ls -1 /home/projects/ku_10024/data/databases/pmc/*.en.merged.filtered.
 	--local-stopwords=/home/projects/ku_10024/data/dictionary/all_local.tsv \
 	--corpus-weights=${weightfile} \
 	--type-pairs=/home/projects/ku_10024/data/dictionary/all_type_pairs.tsv \
-	--out-matches=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis/${outname}_all_matches.tsv \
-	--out-segments=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis/${outname}_all_segments.tsv \
-	--out-pairs=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis/${outname}_all_pairs.tsv
+	--out-matches=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis_reanalysis/${PBS_JOBNAME}_all_matches.tsv \
+	--out-segments=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis_reanalysis/${PBS_JOBNAME}_all_segments.tsv \
+	--out-pairs=/home/projects/ku_10024/people/zelili/tagger_test/proj_thesis_reanalysis/${PBS_JOBNAME}_all_pairs.tsv
+
+cd /home/projects/ku_10024/people/zelili/tagger_test/proj_thesis_reanalysis/
+gzip -9 ${PBS_JOBNAME}_all_matches.tsv
+gzip -9 ${PBS_JOBNAME}_all_segments.tsv
 
